@@ -18,9 +18,9 @@ import datetime
 import pytz
 from functools import partial
 from pymongo import MongoClient
-from general_utilities.query_utilities import get_html, format_query
-from general_utilities.storage_utilities import store_in_mongo
-from general_utilities.parsing_utilities import parse_num
+from utils.query_utilities import get_html, format_query
+from utils.storage_utilities import store_in_mongo
+from utils.parsing_utilities import parse_num
 from request_threading import RequestInfoThread 
 
 def multiprocess_pages(base_URL, job_title, job_location, page_start): 

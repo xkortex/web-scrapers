@@ -11,8 +11,8 @@ sys.path.append(wd + '/../')
 from collections import defaultdict
 import re
 from special_utilities import select_soup, grab_contents_key
-from general_utilities.query_utilities import get_html, format_query
-from general_utilities.storage_utilities import store_in_mongo
+from utils.query_utilities import get_html, format_query
+from utils.storage_utilities import store_in_mongo
 from albums_of_year_lst_ind import find_score
 
 def grab_critics_info(critics_names, critics_hrefs):

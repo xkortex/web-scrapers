@@ -3,3 +3,7 @@
 /data/*
 /js_proj/*
 /nytimes/work/*
+
+geckodriver.log
+.idea
+

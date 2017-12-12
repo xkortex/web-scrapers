@@ -19,10 +19,10 @@ import random
 import datetime
 import pytz
 from selenium.webdriver.common.keys import Keys
-from general_utilities.navigation_utilities import issue_driver_query
-from general_utilities.parsing_utilities import parse_num
-from general_utilities.storage_utilities import store_in_mongo
-from general_utilities.threading_utilities import HrefQueryThread
+from utils.navigation_utilities import issue_driver_query
+from utils.parsing_utilities import parse_num
+from utils.storage_utilities import store_in_mongo
+from utils.threading_utilities import HrefQueryThread
 
 def scrape_job_page(driver, job_title, job_location): 
     """Scrape a page of jobs from CareerBuilder.

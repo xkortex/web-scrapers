@@ -6,8 +6,8 @@ for each thread. It does this by storing the results of the get request as an
 attribute on the class. 
 """
 from threading import Thread
-from general_utilities.query_utilities import get_html
-from general_utilities.parsing_utilities import find_visible_texts
+from utils.query_utilities import get_html
+from utils.parsing_utilities import find_visible_texts
 
 class HrefQueryThread(Thread): 
     """Threading based class to issue a get request and store the results.  

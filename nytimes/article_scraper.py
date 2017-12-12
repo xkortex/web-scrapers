@@ -11,8 +11,8 @@ from requests import get
 from time import sleep
 from os.path import exists
 from pymongo import MongoClient
-from general_utilities.query_utilities import check_response_code, get_html
-from general_utilities.storage_utilities import store_in_mongo
+from utils.query_utilities import check_response_code, get_html
+from utils.storage_utilities import store_in_mongo
 
 class NYTPageScraper(object): 
     """Scraper for pages of results returned by the Article Search API from NYTimes.

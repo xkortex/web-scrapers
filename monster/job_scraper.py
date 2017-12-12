@@ -12,17 +12,21 @@ Usage:
 
 import sys
 import os
+
 wd = os.path.abspath('.')
 sys.path.append(wd + '/../')
 import datetime
 import pytz
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from general_utilities.storage_utilities import store_in_mongo
-from general_utilities.query_utilities import get_html, format_query
-from general_utilities.navigation_utilities import issue_driver_query
-from general_utilities.parsing_utilities import parse_num
-from general_utilities.threading_utilities import HrefQueryThread
+from utils.storage_utilities import store_in_mongo
+from utils.query_utilities import get_html, format_query
+from utils.navigation_utilities import issue_driver_query
+from utils.parsing_utilities import parse_num
+from utils.threading_utilities import HrefQueryThread
+from utils.args import set_arg_parser
+from config.loader import get_cfg_param
+
 
 def scrape_job_page(driver, job_title, job_location):
     """Scrape a page of jobs from Monster.
@@ -164,12 +168,23 @@ def get_num_jobs_txt(driver):
     return num_jobs_txt
         
 if __name__ == '__main__':
-    try: 
-        job_title = sys.argv[1]
-        job_location = sys.argv[2]
-        radius = sys.argv[3]
-    except IndexError: 
-        raise Exception('Program needs a job title, job location, and radius inputted!')
+    # try:
+    #     job_title = sys.argv[1]
+    #     job_location = sys.argv[2]
+    #     radius = sys.argv[3]
+    # except IndexError:
+    #     raise Exception('Program needs a job title, job location, and radius inputted!')
+    parser = set_arg_parser()
+    args = parser.parse_args()
+    verbose = args.verbose
+    job_title = get_cfg_param('query', 'job_title')
+    job_location = get_cfg_param('query', 'job_location')
+    radius = get_cfg_param('query', 'radius')
+    if verbose: print('<v> Verbose print on')
+
+    driver_name = args.driver
+    driver_path = get_cfg_param('driver', driver_name)
+    print('Searching {} for {}, radius {}'.format(job_location, job_title, radius))
 
     base_URL = 'http://jobs.monster.com/search/?'
     query_parameters = ['q={}'.format('-'.join(job_title.split())), 
@@ -177,14 +192,19 @@ if __name__ == '__main__':
             '&rad={}'.format(radius)]
 
     query_URL = format_query(base_URL, query_parameters)
-    driver = issue_driver_query(query_URL)
+    driver = issue_driver_query(query_URL, driver_path=driver_path)
+
+    if verbose: print('<v> Successfully connected selenium')
     
     try: 
-        num_jobs_txt = get_num_jobs_txt(driver)
-        num_jobs = int(parse_num(num_jobs_txt, 0))
+        num_jobs = get_num_jobs_txt(driver)
+        num_jobs = int(parse_num(num_jobs, 0))
+        if verbose: print('<v> {} jobs found'.format(num_jobs))
     except: 
         print('No jobs for search {} in {}'.format(job_title, job_location))
         sys.exit(0)
+
+    assert 0, 'halt'
 
     current_date = str(datetime.datetime.now(pytz.timezone('US/Mountain')))
     storage_dct = {'job_site': 'monster', 'num_jobs': num_jobs, 

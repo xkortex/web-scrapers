@@ -12,8 +12,8 @@ import os
 wd = os.path.abspath('.')
 sys.path.append(wd + '/../')
 from special_utilities import select_soup, grab_contents_key
-from general_utilities.query_utilities import get_html, format_query
-from general_utilities.storage_utilities import store_in_mongo
+from utils.query_utilities import get_html, format_query
+from utils.storage_utilities import store_in_mongo
 
 def rename_keys(input_dct): 
     """Rename keys in the dictionary to a more readable format. 

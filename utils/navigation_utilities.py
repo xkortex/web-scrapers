@@ -7,11 +7,11 @@ opens up a Selenium Browser to help navigate around the JS in web page searches.
 import time 
 import random
 import os
-from pyvirtualdisplay import Display
+# from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-def issue_driver_query(query_URL, query_params=None):
+def issue_driver_query(query_URL, query_params=None, driver_path='geckodriver'):
     """Issue the initial query in order to start scraping.
 
     First, issue a `.get()` request on the `query_URL` - this will either hold 
@@ -39,11 +39,18 @@ def issue_driver_query(query_URL, query_params=None):
     """
     
     # Allows us to run Selenium in a headless fashion (on AWS, for example). 
-    if os.environ['USER'] == 'ubuntu': 
-        display = Display(visible=0, size=(800, 600))
-        display.start()
-    
-    driver = webdriver.Firefox()
+    if os.environ['USER'] == 'ubuntu':
+        pass
+        # this is silly
+        # display = Display(visible=0, size=(800, 600))
+        # display.start()
+    driver_name = os.path.basename(driver_path)
+    if driver_name[:5] == 'chrom':
+        driver = webdriver.Chrome(executable_path=driver_path)
+    elif driver_name[:5] == 'gecko':
+        driver = webdriver.Firefox(executable_path=driver_path)
+    else:
+        raise ValueError('Invalid driver specified: {}'.format(driver_name))
     # Wait long enough for page rendering before searching for an element. 
     driver.implicitly_wait(10)
     driver.get(query_URL)

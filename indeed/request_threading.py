@@ -15,7 +15,7 @@ import re
 from threading import Thread
 from requests import get
 from bs4 import BeautifulSoup
-from general_utilities.parsing_utilities import find_visible_texts
+from utils.parsing_utilities import find_visible_texts
 
 
 class RequestInfoThread(Thread): 
